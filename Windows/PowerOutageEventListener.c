@@ -7,7 +7,7 @@
 int main() {
     unsigned long powerOffDurationMs = 5000;
 
-    int cport_nr=5;  /* /dev/ttyS0 (COM1 on windows) */
+    //int cport_nr=5;  /* /dev/ttyS0 (COM1 on windows) */
     int bdrate=9600; /* 9600 baud */
     char mode[]={'8','N','1',0};
     
@@ -18,6 +18,11 @@ int main() {
     unsigned long powerOffTimeMs = 0;
     unsigned char serialMsg;
     
+    int cport_nr;
+    
+    printf("Enter the number of the comport. For example enter 3 for COM3.\n");
+    scanf("%d", &cport_nr);
+    cport_nr--;
     
     printf("Opening comport...\n");
     
@@ -49,9 +54,12 @@ int main() {
                     powerOffTimeMs = GetTickCount();
                     printf("Power is off!\n");
                 } else if (GetTickCount() > powerOffTimeMs+powerOffDurationMs) {
-                    printf("POWER OUTAGE!!!");
+                    printf("POWER OUTAGE!!!\n");
+                    printf("Executing default.cmd now!\n");
                     system("default.cmd");
-                    Sleep(5000);
+                    printf("default.cmd has been executed! This program will exit now! Press Enter...\n");
+                    getch();
+                    return 0;
                 } else {
                     printf("Power is off!\n");
                 }
